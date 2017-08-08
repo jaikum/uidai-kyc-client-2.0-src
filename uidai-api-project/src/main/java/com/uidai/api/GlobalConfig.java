@@ -18,4 +18,18 @@ public  class GlobalConfig {
 
     @Value("${terminalID}")
     public  String TERMINAL_ID = "public";
+
+    @Value("${keyStoreFile}")
+    public  String keyStoreFile;
+
+    public String getKeyStoreFile() {
+        return keyStoreFile;
+    }
+
+    public String getPublicKeyFile() {
+        return publicKeyFile;
+    }
+
+    @Value("${publicKeyFile}")
+    public  String publicKeyFile;
 }

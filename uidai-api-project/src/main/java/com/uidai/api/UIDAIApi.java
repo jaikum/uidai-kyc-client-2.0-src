@@ -21,12 +21,16 @@ import in.gov.uidai.authentication.uid_auth_request_data._1.Gender;
 import in.gov.uidai.base64.StringUtils;
 import in.gov.uidai.kyc.client.DataDecryptor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.Resource;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.net.URI;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 /**
  * Created by Jai on 8/7/17.
@@ -43,13 +47,15 @@ public class UIDAIApi {
     }
 
 
-    @RequestMapping(value="/", method = RequestMethod.POST)
+    @RequestMapping(value="/validate", method = RequestMethod.POST)
     public UserData validate(@RequestBody UserData userData) throws Exception {
 
         //UserData userData = new UserData();
 
-//        Path currentRelativePath = Paths.get("");
-//        String s = currentRelativePath.toAbsolutePath().toString();
+        Path currentRelativePath = Paths.get("");
+        String s = currentRelativePath.toAbsolutePath().toString();
+        System.out.println("sasdasdasd--- " + s);
+
 
         //System.out.println(GlobalConfig.TERMINAL_ID);
         DeviceCollectedAuthData request = new DeviceCollectedAuthData();
@@ -115,9 +121,11 @@ public class UIDAIApi {
         request.setDeviceMetaData(m);
 
         AuthDataFromDeviceToAUA auaData = null;
+        //Resource resource = new ClassPathResource(globalConfig.getPublicKeyFile());
+
 
         AuthAUADataCreator auaDataCreator = new AuthAUADataCreator(new Encrypter(
-                "uidai_auth_stage.cer"),true);
+                globalConfig.getPublicKeyFile()),true);
 
         auaData = auaDataCreator.prepareAUAData(request.getUid(),
                 "public",
@@ -141,8 +149,8 @@ public class UIDAIApi {
                 "MEaMX8fkRa6PqsqK6wGMrEXcXFl_oXHA-YuknI2uf0gKgZ80HaZgG3A", usesElement, null,
                 auaData, request.getDeviceMetaData());
 
-        DigitalSigner ds = new DigitalSigner("Staging_Signature_PrivateKey.p12","public".toCharArray(),"public");
-        DataDecryptor dd = new DataDecryptor("Staging_Signature_PrivateKey.p12","public".toCharArray(),"uidai_auth_stage.cer");
+        DigitalSigner ds = new DigitalSigner(globalConfig.getKeyStoreFile(),"public".toCharArray(),"public");
+        DataDecryptor dd = new DataDecryptor(globalConfig.getKeyStoreFile(),"public".toCharArray(),globalConfig.getPublicKeyFile());
 
         KYCClient kycClient = new KYCClient( new URI("http://developer.uidai.gov.in/kyc/1.0"));
 

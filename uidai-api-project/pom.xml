@@ -8,6 +8,7 @@
 	<name>API Verifciation Project</name>
 	<description>Spring Boot uidai api</description>
 	<version>1.0</version>
+	<groupId>com.uidai.api</groupId>
 
 	<parent>
 		<groupId>org.springframework.boot</groupId>
@@ -61,6 +62,14 @@
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
+				<!--<configuration>-->
+					<!--<requiresUnpack>-->
+						<!--<dependency>-->
+							<!--<groupId>com.uidai.api</groupId>-->
+							<!--<artifactId>uidai-api-boot</artifactId>-->
+						<!--</dependency>-->
+					<!--</requiresUnpack>-->
+				<!--</configuration>-->
 			</plugin>
 		</plugins>
 	</build>
