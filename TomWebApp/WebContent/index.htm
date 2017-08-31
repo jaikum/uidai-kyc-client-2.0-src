@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html style="background-attachment: scroll;">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>ID Validataion</title>
+
+    <link rel="stylesheet" href="./css/demo.css">
+    <link rel="stylesheet" href="./css/form-basic.css">
+
+
+
+
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular.min.js"></script>
+    <script>
+         var mainApp = angular.module("mainApp", []);
+
+         mainApp.controller('dataController', function($scope,$http) {
+
+
+         $scope.submit = function(){
+
+            var formData = {
+                uid:$scope.uid,
+                name:$scope.name,
+                dob:$scope.dob,
+                sex:$scope.sex
+            };
+
+            $http({
+
+              method: 'POST',
+              url: 'http://localhost:8080/TomWebApp/validate',
+              data: angular.toJson(formData)
+                }).then(function successCallback(response) {
+                    alert(response.responseInfo.code);
+                 }, function errorCallback(response) {
+                    alert(response.responseInfo.errorCode);
+                });
+         }
+
+
+         });
+
+    </script>
+
+</head>
+
+
+<body tcap-name="mainman">
+<header>
+</header>
+
+
+<div ng-app="mainApp" ng-controller="dataController" class="main-content">
+
+    <!-- You only need this form and the form-basic.css -->
+
+    <form class="form-basic" name="valForm" novalidate>
+
+        <div class="form-title-row">
+            <h1> Verification API(POC)</h1>
+        </div>
+
+        <div class="form-row">
+            <label>
+                <span>UID</span>
+                <input type="text" name="uid" ng-model="uid"  required>
+
+            </label><br/>
+
+        </div>
+
+        <div class="form-row">
+            <label>
+                <span>Full Name</span>
+                <input name="text" name="name" ng-model="name" required>
+            </label>
+        </div>
+
+        <div class="form-row">
+            <label>
+                <span>Sex</span>
+                <select name="dropdown" name="sec" ng-model="sex" required>
+                    <option value="M">Male</option>
+                    <option value="F">Female</option>
+                </select>
+            </label>
+        </div>
+
+        <div class="form-row">
+            <label>
+                <span>Date of Birth</span>
+                <input name="text" name="dob" ng-model="dob">
+            </label>
+        </div>
+
+        <div class="form-row">
+            <label>
+                <span>Full Address</span>
+                <textarea name="textarea"></textarea>
+            </label>
+        </div>
+
+
+        <div class="form-row">
+            <button type="submit" ng-click="submit()">Submit Form</button>
+        </div>
+
+    </form>
+
+</div>
+
+
+</body>
+</html>
